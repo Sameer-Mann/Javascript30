@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Type Ahead</title>
+</head>
+<body>
+    <div class="searchArea">
+        <input type="text" name="search" autofocus>
+    </div>
+    <div class="searchData">
+        <ol id="output_area">
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+        </ol>
+    </div>
+<script type="text/javascript">
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    var cities = [];
+    function searchAndFill() {
+        var text = this.value;
+        if(text == "")return;
+        const reg = new RegExp(text,'gi');
+        const output_area = document.querySelector('#output_area');
+        output_area.innerHTML="";
+        const a = cities.filter(obj=>obj.city.match(reg)||obj.state.match(reg))
+        .forEach(obj=>{
+            let l = document.createElement('li');
+            l.innerHTML = `${obj.city},${obj.state}\t${obj.population}`;
+            output_area.appendChild(l);
+        });
+
+    }
+    function load(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if(this.status==200 && this.readyState == 4){
+                cities = JSON.parse(this.responseText);
+            }
+        }
+        xhttp.open('GET',endpoint,true);
+        xhttp.send();
+    }
+    function load1(){
+        fetch(endpoint).then(data=>data.json()).then(data=>cities.push(...data));
+    }
+    load();
+    document.querySelector('input').addEventListener('change',searchAndFill);
+    document.querySelector('input').addEventListener('keyup',searchAndFill);
+</script>
+<style type="text/css">
+    .searchArea{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10vh;
+    }
+    .searchData{
+        display: flex;
+        justify-content: center;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+</style>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas</title>
+</head>
+<body>
+<label for="size">Size</label>
+<input type="range" name="size" id="brushSize" value='0'>
+<label for="colorBrush">Color</label>
+<input type="color" name="colorBrush" id="colorBrush">
+<button id="clear">Clear</button>
+<canvas id="drawingArea" height="400" width="500"></canvas>
+<script type="text/javascript">
+    var canvas = document.querySelector('#drawingArea');
+    var ctx = canvas.getContext("2d");
+    var is_down=false;
+    var px=0,py=0,hue=0;
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    ctx.lineCap="round";
+    ctx.lineJoin="round";
+    function handle(e) {
+        if(!is_down && !e.shiftKey)return;
+        ctx.strokeStyle = `hsl(${hue},100%,50%)`;
+        ctx.beginPath();
+        ctx.moveTo(px,py);
+        ctx.lineTo(e.offsetX,e.offsetY);
+        ctx.stroke();
+        [px,py] = [e.offsetX,e.offsetY];
+        hue=(hue+1)%360;
+        document.getElementById("colorBrush").value = ctx.strokeStyle;
+    }
+    canvas.addEventListener('mousedown',e=>{
+        is_down=true;
+        [px,py] = [e.offsetX,e.offsetY];
+    });
+    canvas.addEventListener('mouseup',e=>{
+        is_down=false;
+    });
+    function changeSize(){
+        ctx.lineWidth = this.value;
+    }
+    canvas.addEventListener('mouseout',e=>is_down=false);
+    canvas.addEventListener('mousemove',e=>{
+        [px,py] = [e.offsetX,e.offsetY];
+        handle(e)
+    });
+    document.querySelector("#brushSize").addEventListener('change',changeSize);
+    document.getElementById('clear').addEventListener('click',()=>{
+        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    });
+    document.querySelector('#colorBrush').addEventListener('change',()=>{
+        ctx.strokeStyle=document.querySelector('#colorBrush').value;
+    });
+</script>
+</body>
+</html>

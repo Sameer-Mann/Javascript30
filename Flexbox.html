@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flexbox</title>
+</head>
+<body>
+    <div class="canvas">
+        <div class="box one">
+            <p>Box1</p>
+            <p>Middle1</p>
+            <p>Down1</p>
+        </div>
+        <div class="box two">
+            <p>Top2</p>
+            <p>Middle2</p>
+            <p>Down2</p>
+        </div>
+        <div class="box three">
+            <p>Top3</p>
+            <p>Middle3</p>
+            <p>Down3</p>
+        </div>
+        <div class="box four">
+            <p>Top4</p>
+            <p>Middle4</p>
+            <p>Down4</p>
+        </div>
+    </div>
+    <style type="text/css">
+
+        .canvas{
+            display: flex;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        p{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex:1 0 auto;
+            width: 100%;
+            transition: transform 0.5s;
+            margin: 0;
+        }
+        .box{
+            justify-content: center;
+            align-items: center;
+            color: white;
+            display: flex;
+            background-position: center;
+            flex-direction: column;
+            transition:
+                font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+                flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+                background 0.2s;
+            flex: 1 0 auto;
+        }
+        .box > *:first-child{
+            transform: translateY(-100%);
+        }
+        .box > *:last-child{
+            transform: translateY(100%);
+        }
+        .box.open-active > *:first-child{
+            transform: translateY(0%);
+        }
+        .box.open-active > *:last-child{
+            transform: translateY(0%);
+        }
+        .box.open{
+            flex:5;
+            font-size: 50px;
+        }
+        .one{background-image:url("/Users/sameer/Pictures/agriculture-apple-blur-257840.jpg");}
+        .two{background-image:  url("/Users/sameer/Pictures/Screenshot\ 2020-08-25\ at\ 1.13.48\ PM.png");}
+        .three{background-image:url("/Users/sameer/Pictures/zO7YBc.jpg");}
+        .four{background-image:url("/Users/sameer/Pictures/Screenshot\ 2020-09-03\ at\ 12.18.21\ PM.png");}
+    </style>
+    <script type="text/javascript">
+        document.querySelectorAll('.box').forEach(k => k.addEventListener('click',(e)=>{
+            k.classList.toggle("open");
+        }));
+        document.querySelectorAll('.box').forEach(k =>k.addEventListener('transitionend',e =>{
+            if(e.propertyName == "flex-grow"){
+                k.classList.toggle('open-active');
+            }
+        }));
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Css Variables</title>
+</head>
+<body>
+    <h1>Update CSS Variables with <span>JS</span></h1>
+    <label for="spacing">Spacing</label><input type="range" name="spacing">
+    <label for="blur">Blur</label><input type="range" name="blur">
+    <label for="base">Color</label><input type="color" name="base">
+    <img src="/Users/sameer/Pictures/euSCcXs.jpg">
+</body>
+<style type="text/css">
+    :root{
+        --base:red;
+        --spacing:10px;
+        --blur:0px;
+    } 
+    body{
+        text-align: center;
+        justify-content: center;
+    }
+    img{
+        padding: var(--spacing);
+        background: var(--base);
+        filter: blur(var(--blur));
+    }
+</style>
+<script type="text/javascript">
+    function handle(e) {
+        if(e.type == "mousemove" && this.name == "base")return;
+        var pref = "";
+        if(this.name !== "base"){pref="px";}
+        document.documentElement.style.setProperty(`--${this.name}`,`${this.value}`+pref);
+    }
+    document.querySelectorAll('input').forEach(k =>k.addEventListener('change',handle));
+    document.querySelectorAll('input').forEach(k =>k.addEventListener('mousemove',handle));
+</script>
+</html>
